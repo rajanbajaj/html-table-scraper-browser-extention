@@ -1,0 +1,24 @@
+{
+    "manifest_version":2,
+    "version":"0.0.1",
+    "name":"Table Scraper",
+    "content_scripts":[
+        {
+            "matches":["<all_urls>"],
+            "js":["main.js"]
+        }
+    ],
+    "icons": {
+        "48": "assets/trowel.png",
+        "96": "assets/trowel.png"
+    },
+
+    "browser_action":{
+        "default_icon":{
+            "19":"assets/trowel.png",
+            "38":"assets/trowel.png"
+        },
+        "default_title":"Table Scraper",
+        "default_popup": "button.html" 
+    }
+}
