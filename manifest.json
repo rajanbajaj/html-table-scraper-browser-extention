@@ -1,6 +1,11 @@
 {
     "manifest_version":2,
-    "version":"0.0.1",
+    "version":"0.0.2",
+    "author": "Rajan Bajaj",
+    "developer": {
+        "name": "Rajan Bajaj",
+        "url": "https://www.linkedin.com/in/rajan-bajaj-b7b3b2133/"
+    },
     "name":"Table Scraper",
     "content_scripts":[
         {
@@ -12,7 +17,6 @@
         "48": "assets/trowel.png",
         "96": "assets/trowel.png"
     },
-
     "browser_action":{
         "default_icon":{
             "19":"assets/trowel.png",
