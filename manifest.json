@@ -6,7 +6,7 @@
         "name": "Rajan Bajaj",
         "url": "https://www.linkedin.com/in/rajan-bajaj-b7b3b2133/"
     },
-    "name":"Table Scraper",
+    "name":"Sniper Table Scraper",
     "content_scripts":[
         {
             "matches":["<all_urls>"],
