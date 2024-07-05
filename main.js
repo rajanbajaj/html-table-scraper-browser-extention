@@ -26,17 +26,22 @@ function downloadCSV(data, sufix) {
  * Prepares the data from a given table element for CSV download.
  * 
  * @param {HTMLTableElement} table - The table element to prepare data from.
+ * @param {string} [tableType='standard'] - The tableType to be selected in order to make dom queries.
  * 
  * @returns {array} The prepared data in a CSV-compatible format.
  * 
  * @example var table = document.getElementById('myTable'); var csvData = prepareData(table);
  */
-function prepareData(table) {
+function prepareData(table, tableType ='standard') {
     var csv = [];
-    var rows = table.getElementsByTagName("tr");
+    var rows = tableType === 'standard' ?
+                    table.getElementsByTagName("tr") :
+                    table.querySelectorAll('[role="row"]');
 
     // Get headers
-    var headers = rows[0].getElementsByTagName("th");
+    var headers = tableType === 'standard' ?
+                        rows[0].getElementsByTagName("th") :
+                        rows[0].querySelectorAll('[role="columnheader"]');
     var headerRow = [];
     for (var j = 0; j < headers.length; j++) {
         headerRow.push(headers[j].innerText);
@@ -45,7 +50,9 @@ function prepareData(table) {
     
     // Get rows
     for (var k = 1; k < rows.length; k++) {
-        var cols = rows[k].getElementsByTagName("td");
+        var cols = tableType === 'standard' ?
+                        rows[k].getElementsByTagName("td"):
+                        rows[k].querySelectorAll('[role="cell"]');
         var row = [];
         for (var l = 0; l < cols.length; l++) {
             row.push(cols[l].innerText);
@@ -61,16 +68,21 @@ function prepareData(table) {
  * 
  * @param {HTMLTableElement} table - The table element to download as CSV.
  * @param {string} [sufix=''] - The suffix to be added to the downloaded CSV file name.
+ * @param {string} [tableType='standard'] - The tableType to be selected in order to make dom queries.
  * 
  * @example downloadCSVTable(document.getElementById('myTable'), '_example');
  */
-function downloadCSVTable(table, sufix = '') {
-    
-    // prepare data
-    var csv = prepareData(table);
-    
-    // Download the CSV file
-    downloadCSV(csv, sufix);
+function downloadCSVTable(table, sufix = '', tableType='standard') {
+    try {
+        
+        // prepare data
+        var csv = prepareData(table, tableType);
+        
+        // Download the CSV file
+        downloadCSV(csv, sufix);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /**
@@ -81,14 +93,21 @@ function downloadCSVTable(table, sufix = '') {
  * @example appendDownloadButtonToTable(document.getElementById('myTable'));
  */
 function appendDownloadButtonToTable(tableNode) {
-    node = document.createElement('button')
-    node.setAttribute('class', 'download-button')
-    node.setAttribute('type', 'button')
-    iconNode = document.createElement('i')
-    iconNode.setAttribute('class', 'icon-download')
-    node.appendChild(iconNode);
-    tableNode.setAttribute('class', 'table-container')
-    tableNode.appendChild(node);
+    try {     
+        textNode = document.createElement('div')
+        textNode.innerHTML = 'Download'
+        node = document.createElement('button')
+        node.setAttribute('class', 'download-button')
+        node.setAttribute('type', 'button')
+        iconNode = document.createElement('i')
+        iconNode.setAttribute('class', 'icon-download')
+        node.appendChild(iconNode);
+        node.appendChild(textNode)
+        tableNode.setAttribute('class', 'table-container')
+        tableNode.appendChild(node);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /**
@@ -103,7 +122,12 @@ function downloadRelatedTable(event) {
     if (node.type) {
         node = node.parentNode;
     }
-    downloadCSVTable(node);
+ 
+    var tableType = 'standard'
+    if (node.role) {
+        tableType = 'divRole'
+    }
+    downloadCSVTable(node, '', tableType);
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -112,12 +136,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         for (var i = 0; i < arr.length; i++) {
             downloadCSVTable(arr[i], i)
         }
+
+        arr = document.querySelectorAll('[role="table"]')
+        for (var i = 0; i < arr.length; i++) {
+            downloadCSVTable(arr[i], i, 'divRole')
+        }
     } else if (request.action === "addDownloadButtons") {
         var arr = document.getElementsByTagName('table');
         for (var i = 0; i < arr.length; i++) {
             appendDownloadButtonToTable(arr[i])
         }
         
+        arr = document.querySelectorAll('[role="table"]')
+        for (var i = 0; i < arr.length; i++) {
+            appendDownloadButtonToTable(arr[i])
+        }
+
         var downloadButtons = document.getElementsByClassName('download-button')
         for (var i = 0; i < downloadButtons.length; i++) {
             downloadButtons[i].addEventListener('click', downloadRelatedTable, false);
