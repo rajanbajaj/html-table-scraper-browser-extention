@@ -22,7 +22,7 @@
             "19":"assets/trowel.png",
             "38":"assets/trowel.png"
         },
-        "default_title":"Table Scraper",
-        "default_popup": "button.html" 
+        "default_title":"Sniper Table Scraper",
+        "default_popup": "extention.html" 
     }
 }
