@@ -30,9 +30,9 @@ function downloadCSV(data, sufix) {
 function sanatizeString(str) {
     return str
         .replace(/"/g, '""')      // Replace all double quotes with double double quotes
-        .replace(/,/g, '\\,')     // Replace all commas with \,
+        .replace(/,/g, '')     // Replace all commas with \,
         .replace(/'/g, "\\'")     // Replace all single quotes with \'
-        .replace(/\n/g, '---');   // Replace all newlines with ---
+        .replace(/\n/g, '  ');   // Replace all newlines with ---
 }
 
 /**
@@ -107,17 +107,15 @@ function downloadCSVTable(table, sufix = '', tableType='standard') {
  */
 function appendDownloadButtonToTable(tableNode) {
     try {     
-        textNode = document.createElement('div')
-        textNode.innerHTML = 'Download'
-        node = document.createElement('button')
-        node.setAttribute('class', 'download-button')
-        node.setAttribute('type', 'button')
-        iconNode = document.createElement('i')
-        iconNode.setAttribute('class', 'icon-download')
-        node.appendChild(iconNode);
-        node.appendChild(textNode)
-        tableNode.setAttribute('class', 'table-container')
-        tableNode.appendChild(node);
+        const buttonNode = document.createElement('button');
+        buttonNode.setAttribute('class', 'download-button');
+        buttonNode.setAttribute('type', 'button');
+        const iconNode = document.createElement('i');
+        iconNode.setAttribute('class', 'bi bi-download icon-download');
+        buttonNode.appendChild(iconNode);
+
+        // Insert the button as the first child of tableNode
+        tableNode.insertBefore(buttonNode, tableNode.firstChild);
     } catch (error) {
         console.log(error);
     }
@@ -171,3 +169,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
     }
 });
+
