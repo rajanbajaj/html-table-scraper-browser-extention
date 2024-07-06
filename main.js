@@ -23,6 +23,19 @@ function downloadCSV(data, sufix) {
 }
 
 /**
+ * 
+ * @param {String} str 
+ * @returns sanatized value by escaping characters: '"', ',' , '
+ */
+function sanatizeString(str) {
+    return str
+        .replace(/"/g, '""')      // Replace all double quotes with double double quotes
+        .replace(/,/g, '\\,')     // Replace all commas with \,
+        .replace(/'/g, "\\'")     // Replace all single quotes with \'
+        .replace(/\n/g, '---');   // Replace all newlines with ---
+}
+
+/**
  * Prepares the data from a given table element for CSV download.
  * 
  * @param {HTMLTableElement} table - The table element to prepare data from.
@@ -44,7 +57,7 @@ function prepareData(table, tableType ='standard') {
                         rows[0].querySelectorAll('[role="columnheader"]');
     var headerRow = [];
     for (var j = 0; j < headers.length; j++) {
-        headerRow.push(headers[j].innerText);
+        headerRow.push(sanatizeString(headers[j].innerText));
     }
     csv.push(headerRow.join(","));
     
@@ -55,7 +68,7 @@ function prepareData(table, tableType ='standard') {
                         rows[k].querySelectorAll('[role="cell"]');
         var row = [];
         for (var l = 0; l < cols.length; l++) {
-            row.push(cols[l].innerText);
+            row.push(sanatizeString(cols[l].innerText));
         }
         csv.push(row.join(","));
     }
