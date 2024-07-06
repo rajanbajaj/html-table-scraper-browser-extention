@@ -2,6 +2,7 @@
     "manifest_version":2,
     "version":"1.0.0",
     "author": "Rajan Bajaj",
+    "description": "Take control of your data extraction with Sniper Table Scraper! This powerful browser extension allows you to easily scrape and download tables from any webpage. Whether you need data for analysis, reporting, or research, Sniper Table Scraper streamlines the process with intuitive features and a user-friendly interface. Simply click to add download buttons to tables on the page and retrieve data in a clean CSV format. Perfect for professionals, researchers, and data enthusiasts, Sniper Table Scraper is your go-to tool for efficient data extraction.",
     "developer": {
         "name": "Rajan Bajaj",
         "url": "https://www.linkedin.com/in/rajan-bajaj-b7b3b2133/"
