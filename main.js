@@ -47,14 +47,26 @@ function sanatizeString(str) {
  */
 function prepareData(table, tableType ='standard') {
     var csv = [];
-    var rows = tableType === 'standard' ?
-                    table.getElementsByTagName("tr") :
-                    table.querySelectorAll('[role="row"]');
+    var rows = [];
+    var headers = [];
+    switch (tableType) {
+        case 'standard':
+            rows = table.getElementsByTagName("tr");
+            headers = rows[0].getElementsByTagName("th");
+            break;
+        case 'divRole':
+            rows = table.querySelectorAll('[role="row"]');
+            headers = rows[0].querySelectorAll('[role="columnheader"]');
 
-    // Get headers
-    var headers = tableType === 'standard' ?
-                        rows[0].getElementsByTagName("th") :
-                        rows[0].querySelectorAll('[role="columnheader"]');
+            break;
+        case 'notionTableView':
+            rows = table.querySelectorAll('[data-index]');
+            headers = rows[0].getElementsByClassName('notion-table-view-header-cell');
+            break;
+        default:
+            break;
+    }
+
     var headerRow = [];
     for (var j = 0; j < headers.length; j++) {
         headerRow.push(sanatizeString(headers[j].innerText));
@@ -63,9 +75,20 @@ function prepareData(table, tableType ='standard') {
     
     // Get rows
     for (var k = 1; k < rows.length; k++) {
-        var cols = tableType === 'standard' ?
-                        rows[k].getElementsByTagName("td"):
-                        rows[k].querySelectorAll('[role="cell"]');
+        switch (tableType) {
+            case 'standard':
+                cols = rows[k].getElementsByTagName("td");
+                break;
+            case 'divRole':
+                cols = rows[k].querySelectorAll('[role="cell"]');
+                break;
+            case 'notionTableView':
+                cols = rows[k].getElementsByClassName('notion-table-view-cell');
+                break;
+            default:
+                break;
+        }
+
         var row = [];
         for (var l = 0; l < cols.length; l++) {
             row.push(sanatizeString(cols[l].innerText));
@@ -133,15 +156,20 @@ function downloadRelatedTable(event) {
     if (node.type) {
         node = node.parentNode;
     }
- 
-    var tableType = 'standard'
+    var tableType = 'standard';
     if (node.role) {
-        tableType = 'divRole'
+        tableType = 'divRole';
+    } else if (node.getAttribute('class').includes('notion-collection-view-body')) {
+        tableType = 'notionTableView';
     }
     downloadCSVTable(node, '', tableType);
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    var notionHeaderRow = document.getElementsByClassName('notion-table-view-header-row');
+    if (notionHeaderRow.length > 0) {
+        notionHeaderRow[0].setAttribute('data-index', -1);
+    }
     if (request.action === "downloadTable") {
         var arr = document.getElementsByTagName('table');
         for (var i = 0; i < arr.length; i++) {
@@ -152,6 +180,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         for (var i = 0; i < arr.length; i++) {
             downloadCSVTable(arr[i], i, 'divRole')
         }
+
+        arr = document.getElementsByClassName('notion-collection-view-body')
+        for (var i = 0; i < arr.length; i++) {
+            console.log(arr[i]);
+            downloadCSVTable(arr[i], i, 'notionTableView')
+        }
     } else if (request.action === "addDownloadButtons") {
         var arr = document.getElementsByTagName('table');
         for (var i = 0; i < arr.length; i++) {
@@ -159,6 +193,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
         
         arr = document.querySelectorAll('[role="table"]')
+        for (var i = 0; i < arr.length; i++) {
+            appendDownloadButtonToTable(arr[i])
+        }
+
+        arr = document.getElementsByClassName('notion-collection-view-body')
         for (var i = 0; i < arr.length; i++) {
             appendDownloadButtonToTable(arr[i])
         }
