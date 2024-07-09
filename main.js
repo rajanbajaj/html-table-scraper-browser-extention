@@ -128,6 +128,7 @@ function downloadCSVTable(table, sufix = '', tableType='standard') {
  * 
  * @example appendDownloadButtonToTable(document.getElementById('myTable'));
  */
+// TODO: fix icon loading
 function appendDownloadButtonToTable(tableNode) {
     try {     
         const buttonNode = document.createElement('button');
@@ -136,6 +137,8 @@ function appendDownloadButtonToTable(tableNode) {
         const iconNode = document.createElement('i');
         iconNode.setAttribute('class', 'bi bi-download icon-download');
         buttonNode.appendChild(iconNode);
+        const textNode = document.createTextNode("Download")
+        buttonNode.appendChild(textNode);
 
         // Insert the button as the first child of tableNode
         tableNode.insertBefore(buttonNode, tableNode.firstChild);
