@@ -53,47 +53,68 @@ function prepareData(table, tableType ='standard') {
         case 'standard':
             rows = table.getElementsByTagName("tr");
             headers = rows[0].getElementsByTagName("th");
+
+            var headerRow = [];
+            for (var j = 0; j < headers.length; j++) {
+                headerRow.push(sanatizeString(headers[j].innerText));
+            }
+            csv.push(headerRow.join(","));
+
+            // Get rows
+            for (var k = 0; k < rows.length; k++) {
+                cols = rows[k].getElementsByTagName("td");
+
+                var row = [];
+                for (var l = 0; l < cols.length; l++) {
+                    row.push(sanatizeString(cols[l].innerText));
+                }
+                csv.push(row.join(","));
+            }
             break;
         case 'divRole':
             rows = table.querySelectorAll('[role="row"]');
             headers = rows[0].querySelectorAll('[role="columnheader"]');
 
+            var headerRow = [];
+            for (var j = 0; j < headers.length; j++) {
+                headerRow.push(sanatizeString(headers[j].innerText));
+            }
+
+            // Get rows
+            for (var k = 0; k < rows.length; k++) {
+                cols = rows[k].querySelectorAll('[role="cell"]');
+
+                var row = [];
+                for (var l = 0; l < cols.length; l++) {
+                    row.push(sanatizeString(cols[l].innerText));
+                }
+                csv.push(row.join(","));
+            }
+            csv.push(headerRow.join(","));
             break;
         case 'notionTableView':
-            rows = table.querySelectorAll('[data-index]');
-            headers = rows[0].getElementsByClassName('notion-table-view-header-cell');
+            headers = table.getElementsByClassName('notion-table-view-header-row')[0]?.getElementsByClassName('notion-table-view-header-cell');
+            rows = table.getElementsByClassName('notion-table-view-row');
+
+            var headerRow = [];
+            for (var j = 0; j < headers.length; j++) {
+                headerRow.push(sanatizeString(headers[j].innerText));
+            }
+
+            // Get rows
+            for (var k = 0; k < rows.length; k++) {
+                cols = rows[k].getElementsByClassName('notion-table-view-cell');
+
+                var row = [];
+                for (var l = 0; l < cols.length; l++) {
+                    row.push(sanatizeString(cols[l].innerText));
+                }
+                csv.push(row.join(","));
+            }
+            csv.push(headerRow.join(","));
             break;
         default:
             break;
-    }
-
-    var headerRow = [];
-    for (var j = 0; j < headers.length; j++) {
-        headerRow.push(sanatizeString(headers[j].innerText));
-    }
-    csv.push(headerRow.join(","));
-    
-    // Get rows
-    for (var k = 1; k < rows.length; k++) {
-        switch (tableType) {
-            case 'standard':
-                cols = rows[k].getElementsByTagName("td");
-                break;
-            case 'divRole':
-                cols = rows[k].querySelectorAll('[role="cell"]');
-                break;
-            case 'notionTableView':
-                cols = rows[k].getElementsByClassName('notion-table-view-cell');
-                break;
-            default:
-                break;
-        }
-
-        var row = [];
-        for (var l = 0; l < cols.length; l++) {
-            row.push(sanatizeString(cols[l].innerText));
-        }
-        csv.push(row.join(","));
     }
 
     return csv;
@@ -155,24 +176,24 @@ function appendDownloadButtonToTable(tableNode) {
  * @example // Automatically bound to the download button's click event
  */
 function downloadRelatedTable(event) {
-    var node = event.target.parentNode;
-    if (node.type) {
-        node = node.parentNode;
-    }
-    var tableType = 'standard';
-    if (node.role) {
-        tableType = 'divRole';
-    } else if (node.getAttribute('class').includes('notion-collection-view-body')) {
-        tableType = 'notionTableView';
+    try {
+        var node = event.target.parentNode;
+        if (node.type) {
+            node = node.parentNode;
+        }
+        var tableType = 'standard';
+        if (node.role) {
+            tableType = 'divRole';
+        } else if (node.getAttribute('class').includes('notion-collection-view-body')) {
+            tableType = 'notionTableView';
+        }
+    } catch {
+        tableType = 'standard';
     }
     downloadCSVTable(node, '', tableType);
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    var notionHeaderRow = document.getElementsByClassName('notion-table-view-header-row');
-    if (notionHeaderRow.length > 0) {
-        notionHeaderRow[0].setAttribute('data-index', -1);
-    }
     if (request.action === "downloadTable") {
         var arr = document.getElementsByTagName('table');
         for (var i = 0; i < arr.length; i++) {
