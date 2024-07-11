@@ -61,7 +61,7 @@ function prepareData(table, tableType ='standard') {
             csv.push(headerRow.join(","));
 
             // Get rows
-            for (var k = 0; k < rows.length; k++) {
+            for (var k = 1; k < rows.length; k++) {
                 cols = rows[k].getElementsByTagName("td");
 
                 var row = [];
@@ -81,7 +81,7 @@ function prepareData(table, tableType ='standard') {
             }
 
             // Get rows
-            for (var k = 0; k < rows.length; k++) {
+            for (var k = 1; k < rows.length; k++) {
                 cols = rows[k].querySelectorAll('[role="cell"]');
 
                 var row = [];
