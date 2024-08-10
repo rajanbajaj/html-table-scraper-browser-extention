@@ -196,6 +196,20 @@ function downloadRelatedTable(event) {
     downloadCSVTable(node, '', tableType);
 }
 
+// Function to remove Bootstrap CSS and JS by ID
+function removeBootstrap() {
+    var css = document.getElementById('bootstrap-css');
+    var css = document.getElementById('bootstrap-icon-css');
+    var js = document.getElementById('bootstrap-js');
+    if (css) {
+        css.parentNode.removeChild(css);
+    }
+    if (js) {
+        js.parentNode.removeChild(js);
+    }
+    console.log('Bootstrap has been removed.');
+}
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "downloadTable") {
         var arr = document.getElementsByTagName('table');
@@ -239,6 +253,46 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         for (let i = 0; i < length; i++) {
             btns[0].remove();
         }
+    } else if (request.action === "removeBootstrapChanges") {
+        removeBootstrap();
     }
 });
 
+// Function to check if Bootstrap is already loaded
+function isBootstrapLoaded() {
+    return typeof bootstrap !== 'undefined';
+}
+
+
+// Function to inject Bootstrap CSS and JS if not loaded
+function injectBootstrap() {
+    if (isBootstrapLoaded()) {
+        console.log('Bootstrap is already loaded.');
+        return;
+    }
+
+    // Create a new link element for Bootstrap CSS
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css';
+    link.id = 'bootstrap-css'; // Assign an ID
+    document.head.appendChild(link);
+
+    // Create a new link element for Bootstrap icons
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css';
+    link.id = 'bootstrap-icon-css'; // Assign an ID
+    document.head.appendChild(link);
+
+    // Create a new script element for Bootstrap JS
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js';
+    script.id = 'bootstrap-js'; // Assign an ID
+    document.head.appendChild(script);
+
+    console.log('Bootstrap has been injected.');
+}
+
+// Run the script on page load
+window.addEventListener('load', injectBootstrap);
