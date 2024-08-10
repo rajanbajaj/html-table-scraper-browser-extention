@@ -1,3 +1,5 @@
+const DOWNLOAD_BUTTON_CLASSNAME = "download-button";
+
 /**
  * Downloads a CSV file from the given data with a specified suffix.
  * 
@@ -153,7 +155,7 @@ function downloadCSVTable(table, sufix = '', tableType='standard') {
 function appendDownloadButtonToTable(tableNode) {
     try {     
         const buttonNode = document.createElement('button');
-        buttonNode.setAttribute('class', 'download-button');
+        buttonNode.setAttribute('class', DOWNLOAD_BUTTON_CLASSNAME);
         buttonNode.setAttribute('type', 'button');
         const iconNode = document.createElement('i');
         iconNode.setAttribute('class', 'bi bi-download icon-download');
@@ -226,9 +228,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             appendDownloadButtonToTable(arr[i])
         }
 
-        var downloadButtons = document.getElementsByClassName('download-button')
+        var downloadButtons = document.getElementsByClassName(DOWNLOAD_BUTTON_CLASSNAME)
         for (var i = 0; i < downloadButtons.length; i++) {
             downloadButtons[i].addEventListener('click', downloadRelatedTable, false);
+        }
+    } else if (request.action === "removeDownloadButtons") {
+        let btns = document.getElementsByClassName(DOWNLOAD_BUTTON_CLASSNAME);
+        let length = btns.length;
+        for (let i = 0; i < length; i++) {
+            btns[0].remove();
         }
     }
 });
