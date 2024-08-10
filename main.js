@@ -157,6 +157,7 @@ function appendDownloadButtonToTable(tableNode) {
         const buttonNode = document.createElement('button');
         buttonNode.setAttribute('class', DOWNLOAD_BUTTON_CLASSNAME);
         buttonNode.setAttribute('type', 'button');
+        buttonNode.setAttribute('title', 'Download this table');
         const iconNode = document.createElement('i');
         iconNode.setAttribute('class', 'bi bi-download icon-download');
         buttonNode.appendChild(iconNode);

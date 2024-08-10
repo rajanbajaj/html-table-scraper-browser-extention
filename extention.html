@@ -42,28 +42,45 @@
 </head>
 <body>
     <div class="container">
-        <div class="text-center mb-4">
-            <a href="https://www.buymeacoffee.com/rbajaj.97" target="_blank" class="d-inline-block fade-in">
-                <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px; width: 217px;">
-            </a>
-        </div>
-        <div class="text-center mb-3">
-            <button type="button" class="btn btn-success animated-button" id="download-table">
+        <div class="text-center d-grid gap-2">
+            <button title="Support us with your love. Thank you." class="btn">
+                <a href="https://www.buymeacoffee.com/rbajaj.97" target="_blank" class="d-inline-block fade-in">
+                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px; width: 217px;">
+                </a>
+            </button>
+            <button 
+                title="Download all tables of current page in single click." 
+                type="button" 
+                class="btn btn-success animated-button" 
+                id="download-table"
+                data-bs-toggle="tooltip" 
+                data-bs-placement="left"
+            >
                 <i class="bi bi-download"></i> Download All Tables
             </button>
-        </div>
-        <div class="text-center mb-3">
-            <button type="button" class="btn btn-primary animated-button" id="add-download-buttons">
+            <button 
+                title="Add download buttons to each tables of current page." 
+                type="button" 
+                class="btn btn-primary animated-button" 
+                id="add-download-buttons"
+                data-bs-toggle="tooltip" 
+                data-bs-placement="left"
+            >
                 Add Buttons To Tables
             </button>
-        </div>
-        <div class="text-center mb-3">
-            <button type="button" class="btn btn-danger animated-button" id="remove-download-buttons">
+            <button 
+                title="Remove download buttons from each tables of current page." 
+                type="button" 
+                class="btn btn-danger animated-button" 
+                id="remove-download-buttons"
+                data-bs-toggle="tooltip" 
+                data-bs-placement="left"
+            >
                 Remove Buttons From Tables
             </button>
         </div>
     </div>
-    <script src="popup.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="popup.js"></script>
 </body>
 </html>
