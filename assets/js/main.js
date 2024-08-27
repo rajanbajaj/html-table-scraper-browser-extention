@@ -274,20 +274,23 @@ function injectBootstrap() {
     // Create a new link element for Bootstrap CSS
     var link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'assests/css/bootstrap.min.css';
+    link.href = chrome.runtime.getURL('assets/css/bootstrap.min.css');
+    //link.href = 'assests/css/bootstrap.min.css';
     link.id = 'bootstrap-css'; // Assign an ID
     document.head.appendChild(link);
 
     // Create a new link element for Bootstrap icons
     var link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'assets/css/bootstrap-icons.css';
+    link.href = chrome.runtime.getURL('assets/css/bootstrap-icons-1.11.3/font/bootstrap-icons.css');
+    //link.href = 'assets/css/bootstrap-icons.css';
     link.id = 'bootstrap-icon-css'; // Assign an ID
     document.head.appendChild(link);
 
     // Create a new script element for Bootstrap JS
     var script = document.createElement('script');
-    script.src = 'assets/js/bootstrap.bundle.min.js';
+    script.src = chrome.runtime.getURL('assets/js/bootstrap.bundle.min.js');
+    //script.src = 'assets/js/bootstrap.bundle.min.js';
     script.id = 'bootstrap-js'; // Assign an ID
     document.head.appendChild(script);
 

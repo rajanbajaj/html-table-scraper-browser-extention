@@ -7,19 +7,24 @@
     "web_accessible_resources": [
 	{
 	    "resources": [
-                "assets/icon/*"
+            "assets/icon/*",
+		    "assets/css/*",
+            "assets/css/bootstrap-icons-1.11.3/*",
+            "assets/css/bootstrap-icons-1.11.3/font/*",
+            "assets/css/bootstrap-icons-1.11.3/font/fonts/*",
+		    "assets/js/*"
 	    ],
 	    "matches": [
-                "*://*/*"
+            "*://*/*"
 	    ]
 	},
 	{
-            "resources": [
+        "resources": [
 	    	"npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
-		"npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		    "npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 	    ],
 	    "matches": [
-		"https://cdn.jsdelivr.net/*"
+		    "https://cdn.jsdelivr.net/*"
 	    ]
 	}
 
@@ -27,7 +32,7 @@
     "content_scripts":[
         {
             "matches":["<all_urls>"],
-            "js":["main.js"]
+            "js":["assets/js/main.js"]
         }
     ],
     "icons": {
