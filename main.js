@@ -1,4 +1,5 @@
 const DOWNLOAD_BUTTON_CLASSNAME = "download-button";
+let loadBootstrap = true;
 
 /**
  * Downloads a CSV file from the given data with a specified suffix.
@@ -208,6 +209,10 @@ function removeBootstrap() {
         js.parentNode.removeChild(js);
     }
     console.log('Bootstrap has been removed.');
+    
+    // Reload the page to revert all styles
+    loadBootstrap = false;
+    location.reload();
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -272,11 +277,11 @@ function injectBootstrap() {
     }
 
     // Create a new link element for Bootstrap CSS
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css';
-    link.id = 'bootstrap-css'; // Assign an ID
-    document.head.appendChild(link);
+    // var link = document.createElement('link');
+    // link.rel = 'stylesheet';
+    // link.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css';
+    // link.id = 'bootstrap-css'; // Assign an ID
+    // document.head.appendChild(link);
 
     // Create a new link element for Bootstrap icons
     var link = document.createElement('link');
@@ -286,13 +291,15 @@ function injectBootstrap() {
     document.head.appendChild(link);
 
     // Create a new script element for Bootstrap JS
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js';
-    script.id = 'bootstrap-js'; // Assign an ID
-    document.head.appendChild(script);
+    // var script = document.createElement('script');
+    // script.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js';
+    // script.id = 'bootstrap-js'; // Assign an ID
+    // document.head.appendChild(script);
 
     console.log('Bootstrap has been injected.');
 }
 
 // Run the script on page load
-window.addEventListener('load', injectBootstrap);
+if (loadBootstrap) {
+    window.addEventListener('load', injectBootstrap);
+}
