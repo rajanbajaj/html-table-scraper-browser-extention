@@ -196,18 +196,12 @@ function downloadRelatedTable(event) {
     downloadCSVTable(node, '', tableType);
 }
 
-// Function to remove Bootstrap CSS and JS by ID
-function removeBootstrap() {
-    var css = document.getElementById('bootstrap-css');
+function removeBootstrapIcons() {
     var css = document.getElementById('bootstrap-icon-css');
-    var js = document.getElementById('bootstrap-js');
     if (css) {
         css.parentNode.removeChild(css);
     }
-    if (js) {
-        js.parentNode.removeChild(js);
-    }
-    console.log('Bootstrap has been removed.');
+    console.log('Bootstrap icons have been removed.');
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -254,7 +248,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             btns[0].remove();
         }
     } else if (request.action === "removeBootstrapChanges") {
-        removeBootstrap();
+        removeBootstrapIcons();
     }
 });
 
@@ -264,38 +258,21 @@ function isBootstrapLoaded() {
 }
 
 
-// Function to inject Bootstrap CSS and JS if not loaded
-function injectBootstrap() {
-    if (isBootstrapLoaded()) {
-        console.log('Bootstrap is already loaded.');
+function injectBootstrapIcons() {
+    if (document.getElementById('bootstrap-icon-css')) {
+        console.log('Bootstrap icons are already loaded.');
         return;
     }
-
-    // Create a new link element for Bootstrap CSS
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = chrome.runtime.getURL('assets/css/bootstrap.min.css');
-    //link.href = 'assests/css/bootstrap.min.css';
-    link.id = 'bootstrap-css'; // Assign an ID
-    document.head.appendChild(link);
 
     // Create a new link element for Bootstrap icons
     var link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = chrome.runtime.getURL('assets/css/bootstrap-icons-1.11.3/font/bootstrap-icons.css');
-    //link.href = 'assets/css/bootstrap-icons.css';
-    link.id = 'bootstrap-icon-css'; // Assign an ID
+    link.id = 'bootstrap-icon-css';
     document.head.appendChild(link);
 
-    // Create a new script element for Bootstrap JS
-    var script = document.createElement('script');
-    script.src = chrome.runtime.getURL('assets/js/bootstrap.bundle.min.js');
-    //script.src = 'assets/js/bootstrap.bundle.min.js';
-    script.id = 'bootstrap-js'; // Assign an ID
-    document.head.appendChild(script);
-
-    console.log('Bootstrap has been injected.');
+    console.log('Bootstrap icons have been injected.');
 }
 
 // Run the script on page load
-window.addEventListener('load', injectBootstrap);
+window.addEventListener('load', injectBootstrapIcons);
