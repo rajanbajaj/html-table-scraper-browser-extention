@@ -10,15 +10,27 @@
     <style>
         body {
             background-color: #f8f9fa;
+            width: 300px;
+            min-height: 400px;
+            margin: 0;
+            padding: 0;
         }
         .container {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         .animated-button {
             transition: transform 0.2s ease-in-out;
         }
         .animated-button:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
         .fade-in {
             animation: fadeIn 1s ease-in-out;
@@ -31,19 +43,19 @@
                 opacity: 1;
             }
         }
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
+        .btn {
+            width: 100%;
+            text-align: left;
+            padding: 10px 15px;
         }
-        .btn-success:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
+        .btn i {
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="text-center d-grid gap-2">
+        <div class="btn-group">
             <button title="Support us with your love. Thank you." class="btn">
                 <a href="https://www.buymeacoffee.com/rbajaj.97" target="_blank" class="d-inline-block fade-in">
                     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px; width: 217px;">
@@ -54,8 +66,6 @@
                 type="button" 
                 class="btn btn-primary animated-button" 
                 id="download-table"
-                data-bs-toggle="tooltip" 
-                data-bs-placement="left"
             >
                 <i class="bi bi-download"></i> 
                 Download All
@@ -65,8 +75,6 @@
                 type="button" 
                 class="btn btn-success animated-button" 
                 id="add-download-buttons"
-                data-bs-toggle="tooltip" 
-                data-bs-placement="left"
             >
                 <i class="bi bi-plus"></i>
                 Add Buttons
@@ -76,27 +84,23 @@
                 type="button" 
                 class="btn btn-danger animated-button" 
                 id="remove-download-buttons"
-                data-bs-toggle="tooltip" 
-                data-bs-placement="left"
             >
                 <i class="bi bi-dash"></i>
                 Remove Buttons
             </button>
             <button 
-                title="Remove extention injected layout changes which is breaking the page." 
+                title="Remove extension injected layout changes which is breaking the page." 
                 type="button" 
                 class="btn btn-warning animated-button" 
                 id="remove-bootstrap-changes"
-                data-bs-toggle="tooltip" 
-                data-bs-placement="left"
             >
                 <i class="bi bi-arrow-counterclockwise"></i>
                 Revert Layout
             </button>
-            <div class="text-info">
-                <i class="bi bi-info-circle text-info fs-4 me-2"></i>
-                hover on buttons for more info
-            </div>
+        </div>
+        <div class="text-info mt-3">
+            <i class="bi bi-info-circle text-info fs-4 me-2"></i>
+            Hover on buttons for more info
         </div>
     </div>
     <script src="assets/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
