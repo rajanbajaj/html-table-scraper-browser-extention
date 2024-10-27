@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "adm-zip": "^0.5.16"
+  },
+  "scripts": {
+    "build:firefox": "node build.js --browser=firefox --version",
+    "build:chrome": "node build.js --browser=chrome --version"
+  }
+}
