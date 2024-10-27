@@ -67,7 +67,7 @@ if (!gitignoreContent.includes('manifest.json')) {
 // Function to create zip file
 function createZipFile(browser) {
     const zip = new AdmZip();
-    const outputFile = `${browser}_extension.zip`;
+    const outputFile = `dist/${browser}_extension.zip`;
     const ignoreList = [
         '.git', 
         '.DS_Store', 
@@ -77,20 +77,28 @@ function createZipFile(browser) {
         'firefox_specific.json', 
         'chrome_specific.json', 
         'manifest_template.json',
-        'package-*'
+        'package.json',
+        'package-lock.json',
+        'chrome_extension.zip',
+        'firefox_extension.zip',
+        'html-table-scraper-browser-extention.zip',
+        'dist'
     ];
 
     // Add files to zip
-    function addDirectoryToZip(directory) {
+    function addDirectoryToZip(directory, zipPath = '') {
         const files = fs.readdirSync(directory);
         for (const file of files) {
             const filePath = path.join(directory, file);
+            const relativePath = path.join(zipPath, file);
+            
             if (ignoreList.some(ignore => filePath.includes(ignore))) continue;
             
             if (fs.statSync(filePath).isDirectory()) {
-                addDirectoryToZip(filePath);
+                zip.addFile(relativePath + '/', Buffer.alloc(0));
+                addDirectoryToZip(filePath, relativePath);
             } else {
-                zip.addLocalFile(filePath);
+                zip.addLocalFile(filePath, zipPath);
             }
         }
     }
