@@ -26,6 +26,11 @@ const chromeSpecific = require('./chrome_specific.json');
 // Update version in the base manifest
 baseManifest.version = newVersion;
 
+// Truncate description if it's too long
+if (baseManifest.description && baseManifest.description.length > 132) {
+    baseManifest.description = baseManifest.description.substring(0, 129) + '...';
+}
+
 const specificManifest = browser === 'firefox' ? { ...baseManifest, ...firefoxSpecific } : { ...baseManifest, ...chromeSpecific };
 
 // Function to ensure directory exists
